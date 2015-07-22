@@ -40,6 +40,7 @@ OPTIONAL - Used only if the branch synched in was not to the WIP branch (had som
 == Log 3 ==
 
 Creation of Snippet scaffold.
+Removed comments of routes.rb.
 
 Scaffolded data columns:
   snippet_ID            auto-gen integer
