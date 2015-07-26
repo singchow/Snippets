@@ -4,3 +4,4 @@
          - added paperclip gem, rails g paperclip user avatar
 20150723 - rectified avatar issue, pending default image
 20150726 - added username in the database
+         - added ActiveRecord User has_and_belongs_to_many :snippets
