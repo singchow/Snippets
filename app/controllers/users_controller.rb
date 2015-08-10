@@ -42,7 +42,7 @@ class UsersController < ApplicationController
     session.clear
     puts session[:current_user_email]
     # flash[:invaliduser] = "You've logged out from RoRSnippet"
-    flash[:notice] = "You've logged out from RoRSnippet"
+    flash[:notice] = "You have logged out from RoRSnippets"
     redirect_to "/login"
   end
 
@@ -56,7 +56,7 @@ class UsersController < ApplicationController
     @personaluserid =  User.find_by(email: session[:current_user_email])
     @personalsnippets = Snippet.all.where(user_id: @personaluserid.id)
 
-    @welcomemsg = "This is your personal snippets collection"
+    @welcomemsg = "#{@personaluserid.username}'s personal snippets collection"
     render template: 'users/personal'
   end
 
@@ -144,7 +144,6 @@ class UsersController < ApplicationController
     end
   end
 
-
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
@@ -180,7 +179,7 @@ class UsersController < ApplicationController
         session[:current_user_email] = params[:email]
         @personaluserid =  User.find_by(email: params[:email])
         session[:current_username] = @personaluserid.username
-        session[:current_avatar] = @personaluserid.avatar
+        session[:current_avatar] = @personaluserid.avatar.url(:thumb)
       else
         # flash[:invaliduser] = "Invalid Email and/or Password."
         flash[:alert] = "Invalid Email and/or Password."
