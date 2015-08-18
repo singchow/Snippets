@@ -82,6 +82,11 @@ task :setup => :environment do
   ]
 end
 
+task :bundle_update do
+  queue "cd #{deploy_to}/current"
+  queue "bundle install --no-deployment"
+end
+
 desc "Deploys the current version to the server."
 task :deploy => :environment do
   to :before_hook do
@@ -93,6 +98,7 @@ task :deploy => :environment do
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
+    invoke :'rails:db_create'
     invoke :'rails:db_migrate'
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
@@ -102,6 +108,79 @@ task :deploy => :environment do
       queue "touch #{deploy_to}/#{current_path}/tmp/restart.txt"
     end
   end
+end
+
+
+# assumes redis, sidekiq and rails not running
+# task :start => :environment do
+#   # queue %[touch redis-daemonize && echo 'daemonize yes' >> redis-daemonize && redis-server redis-daemonize]
+#   queue %[cd #{deploy_to}/current]
+#   # queue %[bundle exec sidekiq -d -l log/sidekiq.log]
+#   queue %[rails s -e production -d]
+# end
+
+task :start => :environment do
+  queue %[cd #{deploy_to}/current]
+  # queue %[rails server puma -d -b 0.0.0.0 -e production --pid #{deploy_to}/tmp/server.pid]
+  queue %[bundle exec puma -t 8:48 -b tcp://0.0.0.0:3000 -e production -d] #--pid  #{deploy_to}/tmp/server.pid
+end
+
+# restarts rails server, redis, and sidekiq
+task :restart => :environment do
+  # queue %[kill -s SIGUSR2 `cat #{deploy_to}/tmp/server.pid`]
+  queue %[kill -9 $(cat #{deploy_to}/tmp/server.pid)]
+  queue %[cd #{deploy_to}/current]
+  queue %[rails server puma -d -b 0.0.0.0 -e production --pid #{deploy_to}/tmp/server.pid]
+  # can restart sidekiq
+  # how to restart redis without losing data?
+end
+
+# restarts rails server, redis, and sidekiq
+task :restart => :environment do
+  #stop rails
+  puts "- stop existing rails" if queue "kill -9 $(cat #{deploy_to}/tmp/server.pid)"
+  #start rails
+  puts "- change directory" if queue "cd #{deploy_to}/current"
+  puts "- start new rails" if queue "rails s -e production --pid #{deploy_to}/tmp/server.pid -d"
+end
+
+task :logs do
+  queue 'tail -f /var/log/nginx/error.log'
+end
+
+# task :kill_that do
+#   queue "kill -9 $(cat #{deploy_to}/tmp/server.pid)"
+# end
+
+
+
+# task :console do
+#   queue "cd #{deploy_to}/current"
+#   queue "rails console"
+# end
+
+#mina kill pid=10353
+task :kill do
+  queue "kill -9 #{ENV['pid']}"
+end
+
+task :reboot do
+  queue "sudo reboot"
+end
+
+task :l do
+  # queue 'tail -f /var/log/nginx/error.log'
+  queue "tail -f #{deploy_to}/shared/log/production.log"
+  # queue "cat #{deploy_to}/shared/log/production.log"
+end
+
+task :whenever do
+  queue "cd #{deploy_to}/current"
+  queue "bundle exec whenever"
+end
+
+task :reboot do
+  queue "sudo reboot"
 end
 
 # For help in making your deploy script, see the Mina documentation:
