@@ -16,5 +16,9 @@ dropbox_access_token: bresg9pqvvllnhb2
 dropbox_access_token_secret: 8g6fhbfa97zma9n
 dropbox_user_id: "437007884"
 
-FACEBOOK_KEY: 794963757284839
+FACEBOOK_KEY: 795005350614013
 FACEBOOK_SECRET: 75cb78174a12c23db670dda3150d1046
+
+production:
+  FACEBOOK_KEY: 794963757284839
+  FACEBOOK_SECRET: 666330f1c27dfe958bf7b30931d1f708
