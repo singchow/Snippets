@@ -25,7 +25,7 @@ set :rvm_path, '/usr/local/rvm/scripts/rvm'
 set :shared_paths, ['config/database.yml', 'config/secrets.yml', 'log']
 
 # Optional settings:
-   set :user, 'root'    # Username in the server to SSH to.
+   set :user, 'rorsnippet'    # Username in the server to SSH to.
    set :port, '22'     # SSH port number.
 #   set :forward_agent, true     # SSH forward_agent.
 
@@ -123,16 +123,6 @@ task :start => :environment do
   queue %[cd #{deploy_to}/current]
   # queue %[rails server puma -d -b 0.0.0.0 -e production --pid #{deploy_to}/tmp/server.pid]
   queue %[bundle exec puma -t 8:48 -b tcp://0.0.0.0:3000 -e production -d] #--pid  #{deploy_to}/tmp/server.pid
-end
-
-# restarts rails server, redis, and sidekiq
-task :restart => :environment do
-  # queue %[kill -s SIGUSR2 `cat #{deploy_to}/tmp/server.pid`]
-  queue %[kill -9 $(cat #{deploy_to}/tmp/server.pid)]
-  queue %[cd #{deploy_to}/current]
-  queue %[rails server puma -d -b 0.0.0.0 -e production --pid #{deploy_to}/tmp/server.pid]
-  # can restart sidekiq
-  # how to restart redis without losing data?
 end
 
 # restarts rails server, redis, and sidekiq
