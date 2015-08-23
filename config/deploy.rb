@@ -81,7 +81,6 @@ task :setup => :environment do
   queue "cd #{deploy_to}/current"
   queue %[echo "export SECRET_KEY_BASE="`bundle exec rake secret` >> ~/.bashrc]
   queue %[echo "export SECRET_TOKEN="`bundle exec rake secret` >> ~/.bashrc]
-
 end
 
 task :bundle_update do
@@ -100,6 +99,7 @@ task :deploy => :environment do
     invoke :'bundle:install'
     invoke :'rails:db_create'
     invoke :'rails:db_migrate'
+    invoke :'seed'
     invoke :'rails:assets_precompile'
     invoke :'deploy:link_shared_paths'
 
@@ -188,8 +188,4 @@ end
 task :whenever do
   queue "cd #{deploy_to}/current"
   queue "bundle exec whenever"
-end
-
-task :reboot do
-  queue "sudo reboot"
 end
