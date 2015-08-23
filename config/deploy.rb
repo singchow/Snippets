@@ -109,6 +109,12 @@ task :deploy => :environment do
   end
 end
 
+desc "Seed data to the database"
+task :seed => :environment do
+    queue "cd #{deploy_to}/#{current_path}/"
+    queue "bundle exec rake db:seed RAILS_ENV=#{rails_env}"
+    queue  %[echo "-----> Rake Seeding Completed."]
+end
 # assumes redis, sidekiq and rails not running
 # task :start => :environment do
 #   # queue %[touch redis-daemonize && echo 'daemonize yes' >> redis-daemonize && redis-server redis-daemonize]
