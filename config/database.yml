@@ -81,6 +81,5 @@ test:
 production:
   <<: *default
   database: Snippets_production
-  username: rails
-  password: gEJpezxQTS
-  # password: <%= ENV['SNIPPETS_DATABASE_PASSWORD'] %>
+  username: railsmina
+  password: <%= ENV['SNIPPETS_PROD_DATABASE_PASSWORD'] %>
