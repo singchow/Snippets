@@ -125,7 +125,7 @@ end
 
 task :first => :environment do
   queue %[cd #{deploy_to}/current]
-  queue %[bundle exec rails server -b 0.0.0.0 -e production --pid #{deploy_to}/tmp/server.pid -d] #--pid  #{deploy_to}/tmp/server.pid
+  queue %[bundle exec rails server -b 0.0.0.0 -e production -p 80 --pid #{deploy_to}/tmp/server.pid -d] #--pid  #{deploy_to}/tmp/server.pid
 end
 
 
