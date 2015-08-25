@@ -15,6 +15,7 @@ set :deploy_to, '/var/www/rorsnippet'
 set :repository, 'https://github.com/singchow/Snippets'
 set :branch, 'master'
 set :term_mode, nil
+set :rails_env, 'production'
 set :rvm_path, '/usr/local/rvm/scripts/rvm'
 
 # For system-wide RVM install.
