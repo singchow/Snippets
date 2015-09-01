@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: Snippets_production
-  username: <%= ENV['SNIPPETS_PROD_DATABASE_USERNAME']%>
+  username: <%= ENV['SNIPPETS_PROD_DATABASE_USERNAME'] %>
   password: <%= ENV['SNIPPETS_PROD_DATABASE_PASSWORD'] %>
