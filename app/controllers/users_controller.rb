@@ -187,7 +187,7 @@ class UsersController < ApplicationController
           puts @user.errors.full_messages
           flash[:alert] = @user.errors.full_messages
           puts flash[:alert]
-          redirect_to "/register"
+          redirect_to "/login"
         end
       end
     end
