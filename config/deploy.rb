@@ -2,33 +2,23 @@ require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
 require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
-# require 'mina/rvm'    # for rvm support. (http://rvm.io)
 
-# Basic settings:
-#   domain       - The hostname to SSH to.
-#   deploy_to    - Path to deploy into.
-#   repository   - Git repo to clone from. (needed by mina/git)
-#   branch       - Branch name to deploy. (needed by mina/git)
-
-set :domain, '45.55.134.249'
-set :deploy_to, '/var/www/rorsnippet'
-set :repository, 'https://github.com/singchow/Snippets'
-set :branch, 'master'
+set :domain, '128.199.207.229'
+set :deploy_to, '/home/shiung/rorsnippet'
+set :repository, 'https://github.com/hh-shiung/Snippets'
+set :branch, 'test_shiung'
 set :term_mode, nil
 set :rails_env, 'production'
-set :rvm_path, '/usr/local/rvm/scripts/rvm'
-
-# For system-wide RVM install.
-#   set :rvm_path, '/usr/local/rvm/bin/rvm'
 
 # Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.
 # They will be linked in the 'deploy:link_shared_paths' step.
 set :shared_paths, ['config/database.yml', 'config/secrets.yml', 'log']
 
 # Optional settings:
-   set :user, 'railsmina'    # Username in the server to SSH to.
-   set :port, '22'     # SSH port number.
+   set :user, 'shiung'    # Username in the server to SSH to.
+   set :port, '26'     # SSH port number.
 #   set :forward_agent, true     # SSH forward_agent.
+
 # This task is the environment that is loaded for most commands, such as
 # `mina deploy` or `mina rake`.
 task :environment do
@@ -43,7 +33,6 @@ task :update do
   queue "cd #{deploy_to}/current"
   queue "bundle install"
 end
-
 
 #mina update_ruby v=2.1.5
 task :update_ruby do
@@ -60,10 +49,9 @@ end
 #   queue %[rvm install 1.9.3-p547]
 #   queue %[gem install rails]
 # end
-task :newtask do
+task :minatest do
   puts "hello world"
 end
-
 
 # Put any custom mkdir's in here for when `mina setup` is ran.
 # For Rails apps, we'll make some of the shared paths that are shared between
@@ -163,8 +151,6 @@ end
 # task :kill_that do
 #   queue "kill -9 $(cat #{deploy_to}/tmp/server.pid)"
 # end
-
-
 
 # task :console do
 #   queue "cd #{deploy_to}/current"
